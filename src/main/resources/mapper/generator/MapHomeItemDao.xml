@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.generator.dao.MapHomeItemDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.modules.generator.entity.MapHomeItemEntity" id="mapHomeItemMap">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="mapHomeItemId" column="map_home_item_id"/>
+        <result property="x" column="x"/>
+        <result property="y" column="y"/>
+        <result property="name" column="name"/>
+        <result property="levelV" column="level_v"/>
+        <result property="boolValue" column="bool_value"/>
+        <result property="boolValue2" column="bool_value_2"/>
+        <result property="intValue" column="int_value"/>
+        <result property="intValue2" column="int_value_2"/>
+        <result property="intValue3" column="int_value_3"/>
+        <result property="numberCd" column="number_cd"/>
+        <result property="numberCd2" column="number_cd_2"/>
+        <result property="numberCd3" column="number_cd_3"/>
+        <result property="isUseMaterial1" column="is_use_material_1"/>
+        <result property="isUseMaterial2" column="is_use_material_2"/>
+        <result property="isUseMaterial3" column="is_use_material_3"/>
+        <result property="cardType1" column="card_type_1"/>
+        <result property="cardName1" column="card_name_1"/>
+        <result property="cardType2" column="card_type_2"/>
+        <result property="cardName2" column="card_name_2"/>
+        <result property="cardType3" column="card_type_3"/>
+        <result property="cardName3" column="card_name_3"/>
+        <result property="stringValue" column="string_value"/>
+    </resultMap>
+
+
+</mapper>
