@@ -16,8 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
+import io.renren.modules.generator.entity.MapHomeCliffEntity;
 import io.renren.modules.generator.entity.MapHomeEntity;
-import io.renren.modules.generator.service.MapHomeService;
+import io.renren.modules.generator.service.MapHomeCliffService;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
 
@@ -31,37 +32,36 @@ import io.renren.common.utils.R;
  * @date 2021-06-28 21:17:26
  */
 @RestController
-@RequestMapping("generator/maphome")
-public class MapHomeController {
+@RequestMapping("generator/maphomecliff")
+public class MapHomeCliffController {
     @Autowired
-    private MapHomeService mapHomeService;
+    private MapHomeCliffService mapHomeCliffService;
     
 
     @RequestMapping("/listAll")
     public R listAll(@RequestParam Map<String, Object> params){
         Map<String, Object> data = new HashMap<String, Object>();
-        QueryWrapper<MapHomeEntity> mapHomeQueryWrapper = new QueryWrapper<>();
-        mapHomeQueryWrapper.orderByAsc("k");
-        List<MapHomeEntity> list = mapHomeService.list(mapHomeQueryWrapper);
+        QueryWrapper<MapHomeCliffEntity> mapHomeCliffQueryWrapper = new QueryWrapper<>();
+        mapHomeCliffQueryWrapper.orderByAsc("k");
+        List<MapHomeCliffEntity> list = mapHomeCliffService.list(mapHomeCliffQueryWrapper);
         
-        Map<String, List<String>> mapHomeList = new HashMap<>();
+        Map<String, List<String>> mapHomeCliffList = new HashMap<>();
         for(int i = 0; i < list.size(); i++) {
-        	List<String> m = mapHomeList.getOrDefault(list.get(i).getK(), new ArrayList<>());
+        	List<String> m = mapHomeCliffList.getOrDefault(list.get(i).getK(), new ArrayList<>());
         	m.add(list.get(i).getV());
-        	mapHomeList.put(list.get(i).getK(), m);
+        	mapHomeCliffList.put(list.get(i).getK(), m);
         }
         data.put("data", data);
         return R.ok(data);
     }
-    
 
     /**
      * 列表
      */
     @RequestMapping("/list")
-    @RequiresPermissions("generator:maphome:list")
+    @RequiresPermissions("generator:maphomecliff:list")
     public R list(@RequestParam Map<String, Object> params){
-        PageUtils page = mapHomeService.queryPage(params);
+        PageUtils page = mapHomeCliffService.queryPage(params);
 
         return R.ok().put("page", page);
     }
@@ -71,20 +71,20 @@ public class MapHomeController {
      * 信息
      */
     @RequestMapping("/info/{id}")
-    @RequiresPermissions("generator:maphome:info")
+    @RequiresPermissions("generator:maphomecliff:info")
     public R info(@PathVariable("id") Long id){
-		MapHomeEntity mapHome = mapHomeService.getById(id);
+		MapHomeCliffEntity mapHomeCliff = mapHomeCliffService.getById(id);
 
-        return R.ok().put("mapHome", mapHome);
+        return R.ok().put("mapHomeCliff", mapHomeCliff);
     }
 
     /**
      * 保存
      */
     @RequestMapping("/save")
-    @RequiresPermissions("generator:maphome:save")
-    public R save(@RequestBody MapHomeEntity mapHome){
-		mapHomeService.save(mapHome);
+    @RequiresPermissions("generator:maphomecliff:save")
+    public R save(@RequestBody MapHomeCliffEntity mapHomeCliff){
+		mapHomeCliffService.save(mapHomeCliff);
 
         return R.ok();
     }
@@ -93,9 +93,9 @@ public class MapHomeController {
      * 修改
      */
     @RequestMapping("/update")
-    @RequiresPermissions("generator:maphome:update")
-    public R update(@RequestBody MapHomeEntity mapHome){
-		mapHomeService.updateById(mapHome);
+    @RequiresPermissions("generator:maphomecliff:update")
+    public R update(@RequestBody MapHomeCliffEntity mapHomeCliff){
+		mapHomeCliffService.updateById(mapHomeCliff);
 
         return R.ok();
     }
@@ -104,9 +104,9 @@ public class MapHomeController {
      * 删除
      */
     @RequestMapping("/delete")
-    @RequiresPermissions("generator:maphome:delete")
+    @RequiresPermissions("generator:maphomecliff:delete")
     public R delete(@RequestBody Long[] ids){
-		mapHomeService.removeByIds(Arrays.asList(ids));
+		mapHomeCliffService.removeByIds(Arrays.asList(ids));
 
         return R.ok();
     }

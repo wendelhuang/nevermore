@@ -1,11 +1,10 @@
 package io.renren.modules.generator.controller;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.google.common.collect.Maps;
 
+import io.renren.modules.generator.entity.MapHomeCliffEntity;
 import io.renren.modules.generator.entity.MapHomeDecoEntity;
-import io.renren.modules.generator.entity.MapHomeEntity;
 import io.renren.modules.generator.service.MapHomeDecoService;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
@@ -31,7 +29,7 @@ import io.renren.common.utils.R;
  *
  * @author chenshun
  * @email sunlightcs@gmail.com
- * @date 2021-06-22 21:03:50
+ * @date 2021-06-28 21:17:26
  */
 @RestController
 @RequestMapping("generator/maphomedeco")
@@ -39,28 +37,21 @@ public class MapHomeDecoController {
     @Autowired
     private MapHomeDecoService mapHomeDecoService;
     
-    @RequestMapping("/listOrigin")
-    public R listOrigin() {
-    	Map<String, Object> data = Maps.newHashMap();
+    @RequestMapping("/listAll")
+    public R listAll(@RequestParam Map<String, Object> params){
+        Map<String, Object> data = new HashMap<String, Object>();
         QueryWrapper<MapHomeDecoEntity> mapHomeDecoQueryWrapper = new QueryWrapper<>();
-        mapHomeDecoQueryWrapper.eq("user_id", 0L);
+        mapHomeDecoQueryWrapper.orderByAsc("k");
         List<MapHomeDecoEntity> list = mapHomeDecoService.list(mapHomeDecoQueryWrapper);
-        data.put("mapHomeDeco", list.stream().filter(Objects::nonNull).map(m -> this.transfer(m)).collect(Collectors.toList()));
-        return R.ok().put("data", data);
-    }
-    
-    private Map<String, Object> transfer(MapHomeDecoEntity mapHomeDecoEntity) {
-    	if (Objects.isNull(mapHomeDecoEntity)) {
-    		return null;
-    	}
-    	Map<String, Object> result = new HashMap<String, Object>();
-    	result.put("name", mapHomeDecoEntity.getName());
-    	result.put("deviation_x", mapHomeDecoEntity.getDeviationX());
-    	result.put("deviation_y", mapHomeDecoEntity.getDeviationY());
-    	result.put("scale_x", mapHomeDecoEntity.getScaleX());
-    	result.put("scale_y", mapHomeDecoEntity.getScaleY());
-    	result.put("scale_z", mapHomeDecoEntity.getScaleZ());
-    	return result;
+        
+        Map<String, List<String>> mapHomeDecoList = new HashMap<>();
+        for(int i = 0; i < list.size(); i++) {
+        	List<String> m = mapHomeDecoList.getOrDefault(list.get(i).getK(), new ArrayList<>());
+        	m.add(list.get(i).getV());
+        	mapHomeDecoList.put(list.get(i).getK(), m);
+        }
+        data.put("data", data);
+        return R.ok(data);
     }
 
     /**

@@ -15,8 +15,8 @@ import lombok.Data;
  * @date 2021-06-28 21:17:26
  */
 @Data
-@TableName("tb_map_home")
-public class MapHomeEntity implements Serializable {
+@TableName("tb_map_home_size")
+public class MapHomeSizeEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**

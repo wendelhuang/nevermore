@@ -17,7 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
 import io.renren.modules.generator.entity.MapHomeEntity;
-import io.renren.modules.generator.service.MapHomeService;
+import io.renren.modules.generator.entity.MapHomeSizeEntity;
+import io.renren.modules.generator.service.MapHomeSizeService;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
 
@@ -31,37 +32,31 @@ import io.renren.common.utils.R;
  * @date 2021-06-28 21:17:26
  */
 @RestController
-@RequestMapping("generator/maphome")
-public class MapHomeController {
+@RequestMapping("generator/maphomesize")
+public class MapHomeSizeController {
     @Autowired
-    private MapHomeService mapHomeService;
+    private MapHomeSizeService mapHomeSizeService;
     
 
     @RequestMapping("/listAll")
     public R listAll(@RequestParam Map<String, Object> params){
         Map<String, Object> data = new HashMap<String, Object>();
-        QueryWrapper<MapHomeEntity> mapHomeQueryWrapper = new QueryWrapper<>();
-        mapHomeQueryWrapper.orderByAsc("k");
-        List<MapHomeEntity> list = mapHomeService.list(mapHomeQueryWrapper);
         
-        Map<String, List<String>> mapHomeList = new HashMap<>();
-        for(int i = 0; i < list.size(); i++) {
-        	List<String> m = mapHomeList.getOrDefault(list.get(i).getK(), new ArrayList<>());
-        	m.add(list.get(i).getV());
-        	mapHomeList.put(list.get(i).getK(), m);
-        }
-        data.put("data", data);
+        data.put("transverse", 146);
+        data.put("transverse_half", 66);
+        data.put("vertical", 107);
+        data.put("vertical_half", 70);
+        
         return R.ok(data);
     }
-    
 
     /**
      * 列表
      */
     @RequestMapping("/list")
-    @RequiresPermissions("generator:maphome:list")
+    @RequiresPermissions("generator:maphomesize:list")
     public R list(@RequestParam Map<String, Object> params){
-        PageUtils page = mapHomeService.queryPage(params);
+        PageUtils page = mapHomeSizeService.queryPage(params);
 
         return R.ok().put("page", page);
     }
@@ -71,20 +66,20 @@ public class MapHomeController {
      * 信息
      */
     @RequestMapping("/info/{id}")
-    @RequiresPermissions("generator:maphome:info")
+    @RequiresPermissions("generator:maphomesize:info")
     public R info(@PathVariable("id") Long id){
-		MapHomeEntity mapHome = mapHomeService.getById(id);
+		MapHomeSizeEntity mapHomeSize = mapHomeSizeService.getById(id);
 
-        return R.ok().put("mapHome", mapHome);
+        return R.ok().put("mapHomeSize", mapHomeSize);
     }
 
     /**
      * 保存
      */
     @RequestMapping("/save")
-    @RequiresPermissions("generator:maphome:save")
-    public R save(@RequestBody MapHomeEntity mapHome){
-		mapHomeService.save(mapHome);
+    @RequiresPermissions("generator:maphomesize:save")
+    public R save(@RequestBody MapHomeSizeEntity mapHomeSize){
+		mapHomeSizeService.save(mapHomeSize);
 
         return R.ok();
     }
@@ -93,9 +88,9 @@ public class MapHomeController {
      * 修改
      */
     @RequestMapping("/update")
-    @RequiresPermissions("generator:maphome:update")
-    public R update(@RequestBody MapHomeEntity mapHome){
-		mapHomeService.updateById(mapHome);
+    @RequiresPermissions("generator:maphomesize:update")
+    public R update(@RequestBody MapHomeSizeEntity mapHomeSize){
+		mapHomeSizeService.updateById(mapHomeSize);
 
         return R.ok();
     }
@@ -104,9 +99,9 @@ public class MapHomeController {
      * 删除
      */
     @RequestMapping("/delete")
-    @RequiresPermissions("generator:maphome:delete")
+    @RequiresPermissions("generator:maphomesize:delete")
     public R delete(@RequestBody Long[] ids){
-		mapHomeService.removeByIds(Arrays.asList(ids));
+		mapHomeSizeService.removeByIds(Arrays.asList(ids));
 
         return R.ok();
     }
