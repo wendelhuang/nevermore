@@ -3,9 +3,9 @@ spring:
         type: com.alibaba.druid.pool.DruidDataSource
         druid:
             driver-class-name: com.mysql.cj.jdbc.Driver
-            url: jdbc:mysql://localhost:3306/renren_fast?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
-            username: renren
-            password: 123456
+            url: jdbc:mysql://118.89.219.190:3306/nevermore?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+            username: root
+            password: Huangww@211
             initial-size: 10
             max-active: 100
             min-idle: 10
@@ -33,7 +33,18 @@ spring:
                     config:
                         multi-statement-allow: true
 
-
+security:
+  oauth2:
+    client:
+      client-id: clientid
+      client-secret: clientsecret
+      access-token-uri: https://graph.facebook.com/oauth/access_token
+      user-authorization-uri: https://www.facebook.com/dialog/oauth
+      token-name: oauth_token
+      authentication-scheme: query
+      client-authentication-scheme: form
+    resource:
+      user-info-uri: https://graph.facebook.com/me
 ##多数据源的配置
 #dynamic:
 #  datasource:
