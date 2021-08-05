@@ -57,7 +57,7 @@ public class MapHomeDecoServiceTest {
 			
 			for(int i = 0; i < jsonArray2.size(); i++) {
 				cn.hutool.json.JSONObject jsonObject = jsonArray2.getJSONObject(i);
-				
+				/*
 				MapHomeDecoEntity mapHomeDecoEntity = new MapHomeDecoEntity();
 				mapHomeDecoEntity.setName(jsonObject.getStr("name"));
 				mapHomeDecoEntity.setDeviationX(jsonObject.getBigDecimal("deviation_x"));
@@ -67,10 +67,11 @@ public class MapHomeDecoServiceTest {
 				mapHomeDecoEntity.setScaleZ(new Long(jsonObject.getInt("scale_z")));
 				
 				list.add(mapHomeDecoEntity);
+				*/
 				System.out.println("---------------");
 			}
 			
-			System.out.println(list.get(0).getName());
+			//System.out.println(list.get(0).getName());
 
 			mapHomeDecoService.saveBatch(list);
 		} catch (Exception e) {

@@ -70,6 +70,18 @@ public class SysUserEntity implements Serializable {
 	 * 状态  0：禁用   1：正常
 	 */
 	private Integer status;
+	/**
+	 * 
+	 */
+	private String twitterid;
+	/**
+	 * 
+	 */
+	private String facebookid;
+	/**
+	 * 
+	 */
+	private String githubid;
 
 	/**
 	 * 角色ID列表

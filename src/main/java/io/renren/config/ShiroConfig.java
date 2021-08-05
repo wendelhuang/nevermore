@@ -63,7 +63,7 @@ public class ShiroConfig {
         
         filterMap.put("/generator/**", "anon");
         
-        filterMap.put("/**", "oauth2");
+        //filterMap.put("/**", "oauth2");
         shiroFilter.setFilterChainDefinitionMap(filterMap);
 
         return shiroFilter;

@@ -15,6 +15,10 @@ import io.renren.common.exception.RRException;
 import io.renren.common.utils.Constant;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.Query;
+import io.renren.modules.generator.entity.SysOauthRoleEntity;
+import io.renren.modules.generator.entity.SysOauthRoleUserEntity;
+import io.renren.modules.generator.service.SysOauthRoleService;
+import io.renren.modules.generator.service.SysOauthRoleUserService;
 import io.renren.modules.sys.dao.SysUserDao;
 import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.sys.service.SysRoleService;
@@ -26,11 +30,14 @@ import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 
 
 /**
@@ -44,6 +51,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 	private SysUserRoleService sysUserRoleService;
 	@Autowired
 	private SysRoleService sysRoleService;
+	@Autowired
+	private SysOauthRoleService sysOauthRoleService;
+	@Autowired
+	private SysOauthRoleUserService sysOauthRoleUserService;
 
 	@Override
 	public PageUtils queryPage(Map<String, Object> params) {
@@ -141,5 +152,57 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 		if(!roleIdList.containsAll(user.getRoleIdList())){
 			throw new RRException("新增用户所选角色，不是本人创建");
 		}
+	}
+
+	@Override
+	public SysUserEntity getUserByFacebookId(String id) {
+		QueryWrapper<SysUserEntity> queryWrapper = new QueryWrapper<>();
+		queryWrapper.eq("facebookid", id);
+		List<SysUserEntity> list = this.baseMapper.selectList(queryWrapper);
+		return CollectionUtils.isEmpty(list) ? null : list.get(0);
+	}
+
+	@Override
+	public SysUserEntity getUserByTwitterId(String id) {
+		QueryWrapper<SysUserEntity> queryWrapper = new QueryWrapper<>();
+		queryWrapper.eq("twitterid", id);
+		List<SysUserEntity> list = this.baseMapper.selectList(queryWrapper);
+		return CollectionUtils.isEmpty(list) ? null : list.get(0);
+	}
+
+	@Override
+	public SysUserEntity getUserByGithubId(String id) {
+		QueryWrapper<SysUserEntity> queryWrapper = new QueryWrapper<>();
+		queryWrapper.eq("githubid", id);
+		List<SysUserEntity> list = this.baseMapper.selectList(queryWrapper);
+		return CollectionUtils.isEmpty(list) ? null : list.get(0);
+	}
+
+	@Override
+	public void saveUser(SysUserEntity user, SysOauthRoleEntity role) {
+		if (!Optional.ofNullable(role).map(SysOauthRoleEntity::getName).isPresent()) {
+			saveUser(user);
+			return;
+		}
+		QueryWrapper<SysOauthRoleEntity> sysOauthRoleQueryWrapper = new QueryWrapper<>();
+		sysOauthRoleQueryWrapper.eq("name", role.getName());
+		SysOauthRoleEntity sysOauthRoleEntity = sysOauthRoleService.getOne(sysOauthRoleQueryWrapper);
+		if (Objects.isNull(sysOauthRoleEntity)) {
+			sysOauthRoleService.save(role);
+			role.setSysOauthRoleId(role.getId());
+			sysOauthRoleService.updateById(role);
+		}
+		
+		// save user firstly
+		this.save(user);
+		
+		// save user oauth mapping
+		SysOauthRoleUserEntity sysOauthRoleUserEntity = new SysOauthRoleUserEntity();
+		sysOauthRoleUserEntity.setSysUserId(user.getUserId());
+		sysOauthRoleUserEntity.setSysOauthRoleId(role.getSysOauthRoleId());
+		sysOauthRoleUserService.save(sysOauthRoleUserEntity);
+		sysOauthRoleUserEntity.setSysOauthRoleUserId(sysOauthRoleUserEntity.getId());
+		sysOauthRoleUserService.updateById(sysOauthRoleUserEntity);
+		
 	}
 }

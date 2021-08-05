@@ -58,7 +58,7 @@ public class MapHomeItemServiceTest {
 			
 			for(int i = 0; i < jsonArray2.size(); i++) {
 				cn.hutool.json.JSONObject jsonObject = jsonArray2.getJSONObject(i);
-				
+				/*
 				MapHomeItemEntity mapHomeItemEntity = new MapHomeItemEntity();
 				mapHomeItemEntity.setMapHomeItemId(new Long(jsonObject.getInt("id")));
 				mapHomeItemEntity.setX(new Long(jsonObject.getInt("x")));
@@ -86,6 +86,7 @@ public class MapHomeItemServiceTest {
 				
 				
 				list.add(mapHomeItemEntity);
+				*/
 				System.out.println("---------------");
 			}
 

@@ -57,6 +57,7 @@ public class MapHomeEntityServiceTest {
 			for(int i = 0; i < jsonArray2.size(); i++) {
 				cn.hutool.json.JSONObject jsonObject = jsonArray2.getJSONObject(i);
 				
+				/*
 				MapHomeEntity mapHomeEntity = new MapHomeEntity();
 				mapHomeEntity.setMapHomeId(new Long(jsonObject.getInt("id")));
 				mapHomeEntity.setX(new Long(jsonObject.getInt("x")));
@@ -64,8 +65,9 @@ public class MapHomeEntityServiceTest {
 				mapHomeEntity.setIssea(jsonObject.getBool("isSea") ? 1L : 0L);
 				mapHomeEntity.setIsuse(jsonObject.getBool("isUse") ? 1L : 0L);
 				mapHomeEntity.setIsvisit(jsonObject.getBool("isVisit") ? 1L : 0L);
-				
 				list.add(mapHomeEntity);
+				*/
+				
 				System.out.println("---------------");
 			}
 			
